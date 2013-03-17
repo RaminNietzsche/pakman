@@ -38,31 +38,14 @@ import signal
 import sys
 from bcolor import bcolors
 import YesNoQ
-import time
-
 
 DownloadList=[]
 DownloadSize=[0]
 
 MAXTHREAD = Config.MAXTHREAD
-SLEEPTIME=0
-
-def Runner(TargetUrl):
-    for item in CheckUrl.DownloadList:
-        while threading.activeCount() >= MAXTHREAD+1:
-                time.sleep(SLEEPTIME)
-        t = Thread(target=DownloadUrl, args=(item,))
-        t.start()
 
 def DownloadUrl(url):
-    p = subprocess.Popen(["axel -a "+ url], shell=True, stderr=subprocess.PIPE)
-    while True:
-    	out = p.stderr.read(1)
-    	if out == '' and p.poll() != None:
-            break
-	if out != '':
-            sys.stdout.write(out)
-            sys.stdout.flush()
+    p = subprocess.Popen(["axel -a "+ url], shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
     print url 
 
 def signal_handler(signal, frame):
@@ -70,6 +53,7 @@ def signal_handler(signal, frame):
         sys.exit(0)
 
 signal.signal(signal.SIGINT, signal_handler)
+
 
 def convert_bytes(bytes):
     bytes = float(bytes)
@@ -108,15 +92,12 @@ def main(argv):
 	    #print CheckUrl.DownloadList
 	    print "You must download : " + convert_bytes(CheckUrl.DownloadSize[0])
 	    if YesNoQ.query_yes_no("Proceed with installation? "):
-		Runner(CheckUrl.DownloadList)
-#		for item in CheckUrl.DownloadList:
-#		     while threading.activeCount() >= MAXTHREAD+1:
-#		     	pass
-#		     GoGoGo = Thread(target=DownloadUrl, args=(item,))
-#    		     GoGoGo.start()
-#		GoGoGo.join()
-	        while threading.activeCount() > 1:
-                    time.sleep(1)
+		for item in CheckUrl.DownloadList:
+		     while threading.activeCount() >= MAXTHREAD+1:
+		     	pass
+		     GoGoGo = Thread(target=DownloadUrl, args=(item,))
+    		     GoGoGo.start()
+		GoGoGo.join()
 	    else:
 		print "BYE BYE :D"
 		exit(1)
@@ -132,8 +113,7 @@ def main(argv):
      except ValueError:
 	    print bcolors.FAIL + "What happend? Report it (Ramin.Najarbashi@Gmail.com)" + bcolors.ENDC
 
-if __name__ == "__main__" :
-        import sys
-        main(sys.argv)
-
+if __name__ == '__main__':
+    import sys
+    main(sys.argv)
 
