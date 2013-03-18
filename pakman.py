@@ -105,16 +105,9 @@ def main(argv):
 	    for line in p.stdout.readlines():
 	    	if CheckUrl.checkURL(line) == 0:
 		    return
-	    #print CheckUrl.DownloadList
 	    print "You must download : " + convert_bytes(CheckUrl.DownloadSize[0])
 	    if YesNoQ.query_yes_no("Proceed with installation? "):
 		Runner(CheckUrl.DownloadList)
-#		for item in CheckUrl.DownloadList:
-#		     while threading.activeCount() >= MAXTHREAD+1:
-#		     	pass
-#		     GoGoGo = Thread(target=DownloadUrl, args=(item,))
-#    		     GoGoGo.start()
-#		GoGoGo.join()
 	        while threading.activeCount() > 1:
                     time.sleep(1)
 	    else:
@@ -127,7 +120,7 @@ def main(argv):
 	    else:
 	    	print bcolors.FAIL + "invalid args!" + bcolors.ENDC
 		exit(1)
-	    stdout_data = pacman.communicate(input='y')[0]
+	    stdout_data = pacman.communicate(input='')[0]
             print bcolors.OKBLUE + "FIN! ;) (PA|< Man)" + bcolors.ENDC
      except ValueError:
 	    print bcolors.FAIL + "What happend? Report it (Ramin.Najarbashi@Gmail.com)" + bcolors.ENDC

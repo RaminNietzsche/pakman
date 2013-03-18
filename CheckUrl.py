@@ -1,7 +1,3 @@
-#!/usr/bin/python2.7
-
-#from httplib import HTTP
-#from urlparse import urlparse
 from bcolor import bcolors
 import urllib
 
