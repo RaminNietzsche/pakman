@@ -1,4 +1,3 @@
 1) Dont Download if file was in /var/cache/pacman/pkg (pacman -Sp --print-format)
 2) check 4 ALL pacman commands ;)
 3) must be nice :D
-4) WOW! go to /var/cach/pacman/pkg!!! 

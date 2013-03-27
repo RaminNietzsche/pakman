@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.7
+#!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 
 #-------------------------------------------------------------------------------#
@@ -45,6 +45,8 @@ DownloadList=[]
 DownloadSize=[0]
 
 MAXTHREAD = Config.MAXTHREAD
+OUTPUT = Config.OUTPUT
+CONNECTIONS = Config.CONNECTIONS
 SLEEPTIME=0
 
 def Runner(TargetUrl):
@@ -55,7 +57,7 @@ def Runner(TargetUrl):
         t.start()
 
 def DownloadUrl(url):
-    p = subprocess.Popen(["axel -a "+ url], shell=True, stderr=subprocess.PIPE)
+    p = subprocess.Popen(["axel -o \""+ OUTPUT  +"\" -n "+ (str)(CONNECTIONS) +" -a "+ url ], shell=True, stderr=subprocess.PIPE)
     while True:
     	out = p.stderr.read(1)
     	if out == '' and p.poll() != None:
@@ -103,8 +105,8 @@ def main(argv):
                 p = subprocess.Popen(["pacman "+ argv[1]], shell=True, stderr=subprocess.STDOUT)
                 exit()
 	    for line in p.stdout.readlines():
-	    	if CheckUrl.checkURL(line) == 0:
-		    return
+	        if CheckUrl.checkURL(line) == 0:
+	            return
 	    print "You must download : " + convert_bytes(CheckUrl.DownloadSize[0])
 	    if YesNoQ.query_yes_no("Proceed with installation? "):
 		Runner(CheckUrl.DownloadList)
